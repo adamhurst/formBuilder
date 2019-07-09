@@ -313,14 +313,15 @@ const FormBuilder = function(opts, element, $) {
   }
 
   const defaultFieldAttrs = type => {
-    const defaultAttrs = ['required', 'label', 'description', 'placeholder', 'className', 'name', 'access', 'value']
+    const lmcVars = ['showIfChecked', 'fieldId']
+    const defaultAttrs = ['required', 'label', 'description', 'placeholder', 'className', 'name', 'access', 'value'].concat(lmcVars)
     const noValFields = ['header', 'paragraph', 'file', 'autocomplete'].concat(d.optionFields)
 
     const valueField = !noValFields.includes(type)
 
     const typeAttrsMap = {
       autocomplete: defaultAttrs.concat(['options', 'requireValidOption']),
-      button: ['label', 'subtype', 'style', 'className', 'name', 'value', 'access'],
+      button: ['label', 'subtype', 'style', 'className', 'name', 'value', 'access'].concat(lmcVars),
       checkbox: [
         'required',
         'label',
@@ -332,13 +333,13 @@ const FormBuilder = function(opts, element, $) {
         'access',
         'other',
         'options',
-      ],
+      ].concat(lmcVars),
       text: defaultAttrs.concat(['subtype', 'maxlength']),
       date: defaultAttrs,
       file: defaultAttrs.concat(['subtype', 'multiple']),
-      header: ['label', 'subtype', 'className', 'access'],
-      hidden: ['name', 'value', 'access'],
-      paragraph: ['label', 'subtype', 'className', 'access'],
+      header: ['label', 'subtype', 'className', 'access'].concat(lmcVars),
+      hidden: ['name', 'value', 'access'].concat(lmcVars),
+      paragraph: ['label', 'subtype', 'className', 'access', 'showIfChecked', 'fieldId'], // showIfChecked
       number: defaultAttrs.concat(['min', 'max', 'step']),
       select: defaultAttrs.concat(['multiple', 'options']),
       textarea: defaultAttrs.concat(['subtype', 'maxlength', 'rows']),
@@ -386,6 +387,12 @@ const FormBuilder = function(opts, element, $) {
         return boolAttribute('inline', values, labels)
       },
       label: () => textAttribute('label', values),
+
+      // Custom LMC Fields
+      // lmc_custom: () => textAttribute('lmc_custom', values),
+      showIfChecked: () => textAttribute('showIfChecked', values),
+      fieldId: () => textAttribute('fieldId', values),
+
       description: () => textAttribute('description', values),
       subtype: () => selectAttribute('subtype', values, subtypes[type]),
       style: () => btnStyles(values.style),

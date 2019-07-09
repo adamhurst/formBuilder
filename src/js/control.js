@@ -25,7 +25,7 @@ export default class control {
     }
 
     // process config - extract standard properties
-    const properties = ['label', 'description', 'subtype', 'required', 'disabled']
+    const properties = ['label', 'description', 'subtype', 'required', 'disabled', 'showIfChecked', 'fieldId']
     for (const prop of properties) {
       this[prop] = config[prop]
       delete config[prop]
