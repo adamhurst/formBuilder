@@ -219,6 +219,10 @@ const FormBuilder = function(opts, element, $) {
       field.name = nameAttr(field)
     }
 
+    if (!field.key) {
+      field.key = nameAttr(field)
+    }
+
     if (isNew && ['text', 'number', 'file', 'date', 'select', 'textarea', 'autocomplete'].includes(field.type)) {
       field.className = field.className || 'form-control'
     }
@@ -313,15 +317,15 @@ const FormBuilder = function(opts, element, $) {
   }
 
   const defaultFieldAttrs = type => {
-    const lmcVars = ['showIfChecked', 'fieldId']
-    const defaultAttrs = ['required', 'label', 'description', 'placeholder', 'className', 'name', 'access', 'value'].concat(lmcVars)
+    const lmcVars = ['showIfChecked', 'key']
+    const defaultAttrs = ['required', 'label', 'description', 'placeholder', 'className', 'access', 'value'].concat(lmcVars)
     const noValFields = ['header', 'paragraph', 'file', 'autocomplete'].concat(d.optionFields)
 
     const valueField = !noValFields.includes(type)
 
     const typeAttrsMap = {
       autocomplete: defaultAttrs.concat(['options', 'requireValidOption']),
-      button: ['label', 'subtype', 'style', 'className', 'name', 'value', 'access'].concat(lmcVars),
+      button: ['label', 'subtype', 'style', 'className', 'value', 'access'].concat(lmcVars),
       checkbox: [
         'required',
         'label',
@@ -329,7 +333,6 @@ const FormBuilder = function(opts, element, $) {
         'toggle',
         'inline',
         'className',
-        'name',
         'access',
         'other',
         'options',
@@ -338,8 +341,8 @@ const FormBuilder = function(opts, element, $) {
       date: defaultAttrs,
       file: defaultAttrs.concat(['subtype', 'multiple']),
       header: ['label', 'subtype', 'className', 'access'].concat(lmcVars),
-      hidden: ['name', 'value', 'access'].concat(lmcVars),
-      paragraph: ['label', 'subtype', 'className', 'access', 'showIfChecked', 'fieldId'], // showIfChecked
+      hidden: ['value', 'access'].concat(lmcVars),
+      paragraph: ['label', 'subtype', 'className', 'access', 'showIfChecked', 'fieldId'].concat(lmcVars),
       number: defaultAttrs.concat(['min', 'max', 'step']),
       select: defaultAttrs.concat(['multiple', 'options']),
       textarea: defaultAttrs.concat(['subtype', 'maxlength', 'rows']),
@@ -389,9 +392,8 @@ const FormBuilder = function(opts, element, $) {
       label: () => textAttribute('label', values),
 
       // Custom LMC Fields
-      // lmc_custom: () => textAttribute('lmc_custom', values),
+      key: () => textAttribute('key', values),
       showIfChecked: () => textAttribute('showIfChecked', values),
-      fieldId: () => textAttribute('fieldId', values),
 
       description: () => textAttribute('description', values),
       subtype: () => selectAttribute('subtype', values, subtypes[type]),
@@ -1019,6 +1021,7 @@ const FormBuilder = function(opts, element, $) {
 
     $clone.attr('id', data.lastID)
     $clone.attr('name', cloneName)
+    $clone.attr('key', cloneName)
     $clone.addClass('cloned')
     $('.sortable-options', $clone).sortable()
 
