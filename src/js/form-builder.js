@@ -1008,8 +1008,8 @@ const FormBuilder = function(opts, element, $) {
     const ts = new Date().getTime()
     const cloneName = type + '-' + ts
     const $clone = currentItem.clone()
-
     $('.fld-name', $clone).val(cloneName)
+    $('.fld-key', $clone).val(nameAttr({ type: type || 'clone' }))
     $clone.find('[id]').each((i, elem) => {
       elem.id = elem.id.replace(currentId, data.lastID)
     })
