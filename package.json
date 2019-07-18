@@ -54,26 +54,6 @@
     "fontServer": "http://fontello.com",
     "fontelloToken": "c87fefd1a6fb70d86e828e86c655c178"
   },
-  "babel": {
-    "presets": [
-      [
-        "@babel/preset-env",
-        {
-          "targets": {
-            "browsers": [
-              "> 1%"
-            ]
-          },
-          "loose": true
-        }
-      ]
-    ],
-    "comments": false,
-    "plugins": [
-      "@babel/plugin-proposal-object-rest-spread",
-      "@babel/plugin-proposal-class-properties"
-    ]
-  },
   "scripts": {
     "build:analyze": "webpack --mode production -p --progress --config tools/webpack.config --analyze",
     "build:plugins": "webpack --mode production -p --display-entrypoints --progress --config tools/webpack.plugins.config",
@@ -95,7 +75,9 @@
   },
   "dependencies": {
     "jquery": ">=3.4.1",
-    "jquery-ui-sortable": "*",
+    "jquery-ui-sortable": "*"
+  },
+  "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
     "@babel/node": "^7.2.2",
@@ -103,9 +85,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
     "@babel/plugin-syntax-object-rest-spread": "^7.2.0",
     "@babel/plugin-transform-destructuring": "^7.4.4",
-    "@babel/preset-env": "^7.4.4"
-  },
-  "devDependencies": {
+    "@babel/preset-env": "^7.4.4",
     "@semantic-release/changelog": "^3.0.2",
     "@semantic-release/git": "^7.0.8",
     "@semantic-release/npm": "^5.1.9",
