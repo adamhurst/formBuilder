@@ -271,6 +271,7 @@ const FormBuilder = function(opts, element, $) {
    * @return {String} field options markup
    */
   const fieldOptions = function(fieldData) {
+    // TODO: 
     const { type, values, name } = fieldData
     let fieldValues
     const optionActions = [m('a', mi18n.get('addOption'), { className: 'add add-opt' })]
@@ -278,8 +279,9 @@ const FormBuilder = function(opts, element, $) {
     const isMultiple = fieldData.multiple || type === 'checkbox-group'
     const optionDataTemplate = label => {
       const optionData = {
-        label,
-        value: hyphenCase(label),
+        riskScore: 'Risk score (low | medium | high)',
+        label: 'Label',
+        value: 'Value',
       }
 
       if (type !== 'autocomplete') {
@@ -317,35 +319,35 @@ const FormBuilder = function(opts, element, $) {
   }
 
   const defaultFieldAttrs = type => {
-    const lmcVars = ['showIfChecked', 'key']
-    const defaultAttrs = ['required', 'label', 'description', 'placeholder', 'className', 'access', 'value'].concat(lmcVars)
+    const lmcVars = ['dependsOnKey', 'dependsOnValue', 'key']
+    const defaultAttrs = ['required', 'label', 'description', 'placeholder', 'value'].concat(lmcVars)
     const noValFields = ['header', 'paragraph', 'file', 'autocomplete'].concat(d.optionFields)
 
     const valueField = !noValFields.includes(type)
 
     const typeAttrsMap = {
       autocomplete: defaultAttrs.concat(['options', 'requireValidOption']),
-      button: ['label', 'subtype', 'style', 'className', 'value', 'access'].concat(lmcVars),
+      button: ['label', 'style', 'className', 'value', 'access'].concat(lmcVars),
       checkbox: [
         'required',
         'label',
         'description',
         'toggle',
         'inline',
-        'className',
         'access',
         'other',
         'options',
+        'optionType',
       ].concat(lmcVars),
-      text: defaultAttrs.concat(['subtype', 'maxlength']),
+      text: defaultAttrs.concat(['maxlength']),
       date: defaultAttrs,
-      file: defaultAttrs.concat(['subtype', 'multiple']),
-      header: ['label', 'subtype', 'className', 'access'].concat(lmcVars),
+      file: defaultAttrs.concat(['multiple']),
+      header: ['label', 'className', 'access'].concat(lmcVars),
       hidden: ['value', 'access'].concat(lmcVars),
-      paragraph: ['label', 'subtype', 'className', 'access', 'showIfChecked', 'fieldId'].concat(lmcVars),
+      paragraph: ['label', 'className', 'access'].concat(lmcVars),
       number: defaultAttrs.concat(['min', 'max', 'step']),
-      select: defaultAttrs.concat(['multiple', 'options']),
-      textarea: defaultAttrs.concat(['subtype', 'maxlength', 'rows']),
+      select: defaultAttrs.concat(['multiple', 'options', 'optionType']),
+      textarea: defaultAttrs.concat(['maxlength', 'rows']),
     }
 
     typeAttrsMap['checkbox-group'] = typeAttrsMap.checkbox
@@ -391,9 +393,17 @@ const FormBuilder = function(opts, element, $) {
       },
       label: () => textAttribute('label', values),
 
-      // Custom LMC Fields
+      // Custom LMC Fields. Field labels are set in the demo.js file
       key: () => textAttribute('key', values),
-      showIfChecked: () => textAttribute('showIfChecked', values),
+      dependsOnKey: () => textAttribute('dependsOnKey', values),
+      dependsOnValue: () => textAttribute('dependsOnValue', values),
+      optionType: () => selectAttribute('optionType', values, [
+        { value: 'boolean', label: 'Boolean'},
+        { value: 'number', label: 'Number'},
+        { value: 'integer', label: 'Integer'},
+        { value: 'string', label: 'Text'},
+      ]),
+      // showIfChecked: () => textAttribute('showIfChecked', values),
 
       description: () => textAttribute('description', values),
       subtype: () => selectAttribute('subtype', values, subtypes[type]),
@@ -808,6 +818,9 @@ const FormBuilder = function(opts, element, $) {
         className: `fld-${attribute} form-control`,
         id: `${attribute}-${data.lastID}`,
       }
+      if (attribute === 'key') {
+        inputConfig.disabled = true;
+      }
       const attributeLabel = m('label', attrLabel, {
         for: inputConfig.id,
       }).outerHTML
@@ -967,9 +980,9 @@ const FormBuilder = function(opts, element, $) {
     const optionInputType = {
       selected: multipleSelect ? 'checkbox' : 'radio',
     }
-    const optionDataOrder = ['value', 'label', 'selected']
+    const optionDataOrder = ['riskScore', 'value', 'label', 'selected']
     const optionInputs = []
-    const optionTemplate = { selected: false, label: '', value: '' }
+    const optionTemplate = { label: 'label', value: 'value', riskScore: 'low | medium | high' }
 
     optionData = Object.assign(optionTemplate, optionData)
 

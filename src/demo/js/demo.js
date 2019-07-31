@@ -32,40 +32,41 @@ const toggleBootStrap = ({ target }) => {
 document.getElementById('toggleBootstrap').addEventListener('click', toggleBootStrap, false)
 
 jQuery(function($) {
-  const fields = [
-    {
-      type: 'autocomplete',
-      label: 'Custom Autocomplete',
-      required: true,
-      values: [
-        { label: 'SQL' },
-        { label: 'C#' },
-        { label: 'JavaScript' },
-        { label: 'Java' },
-        { label: 'Python' },
-        { label: 'C++' },
-        { label: 'PHP' },
-        { label: 'Swift' },
-        { label: 'Ruby' },
-      ],
-    },
-    {
-      label: 'Star Rating',
-      attrs: {
-        type: 'starRating',
-      },
-      icon: '🌟',
-    },
-  ]
+  // const fields = [
+    // {
+    //   type: 'autocomplete',
+    //   label: 'Custom Autocomplete',
+    //   required: true,
+    //   values: [
+    //     { label: 'SQL' },
+    //     { label: 'C#' },
+    //     { label: 'JavaScript' },
+    //     { label: 'Java' },
+    //     { label: 'Python' },
+    //     { label: 'C++' },
+    //     { label: 'PHP' },
+    //     { label: 'Swift' },
+    //     { label: 'Ruby' },
+    //   ],
+    // },
+    // {
+    //   label: 'Star Rating',
+    //   attrs: {
+    //     type: 'starRating',
+    //   },
+    //   icon: '🌟',
+    // },
+  // ]
 
   const replaceFields = [
-    {
-      type: 'textarea',
-      subtype: 'tinymce',
-      datatype: 'custom-tinymce',
-      label: 'tinyMCE',
-      required: true,
-    },
+    // {
+    //   type: 'textarea',
+    //   subtype: 'tinymce',
+    //   datatype: 'custom-tinymce',
+    //   label: 'tinyMCE',
+    //   // test: 'rerere',
+    //   required: true,
+    // },
   ]
 
   const actionButtons = [
@@ -84,16 +85,16 @@ jQuery(function($) {
     'save',
   ]
 
-  const templates = {
-    starRating: function(fieldData) {
-      return {
-        field: '<span id="' + fieldData.name + '">',
-        onRender: () => {
-          $(document.getElementById(fieldData.name)).rateYo({ rating: 3.6 })
-        },
-      }
-    },
-  }
+  // const templates = {
+  //   starRating: function(fieldData) {
+  //     return {
+  //       field: '<span id="' + fieldData.name + '">',
+  //       onRender: () => {
+  //         $(document.getElementById(fieldData.name)).rateYo({ rating: 3.6 })
+  //       },
+  //     }
+  //   },
+  // }
 
   const inputSets = [
     {
@@ -189,7 +190,7 @@ jQuery(function($) {
   }
 
   // test disabledAttrs
-  const disabledAttrs = ['placeholder', 'name']
+  const disabledAttrs = ['access', 'name', 'value', 'inline', 'toggle', 'other']
 
   const fbOptions = {
     disabledSubtypes: {
@@ -198,10 +199,10 @@ jQuery(function($) {
     // disableHTMLLabels: true,
     disabledAttrs,
     // allowStageSort: false,
-    dataType,
-    subtypes: {
-      text: ['datetime-local'],
-    },
+    // dataType,
+    // subtypes: {
+    //   text: ['datetime-local'],
+    // },
     onSave: toggleEdit,
     onAddField: fieldId => {
       document.getElementById('currentFieldId').value = fieldId
@@ -211,15 +212,15 @@ jQuery(function($) {
       enable: true,
     },
     sortableControls: true,
-    fields: fields,
-    templates: templates,
-    inputSets: inputSets,
+    // fields: fields,
+    // templates: templates,
+    // inputSets: inputSets,
     typeUserDisabledAttrs: typeUserDisabledAttrs,
-    typeUserAttrs: typeUserAttrs,
+    // typeUserAttrs: typeUserAttrs,
     disableInjectedStyle: false,
     actionButtons: actionButtons,
-    disableFields: ['autocomplete', 'custom-tinymce'],
-    replaceFields: replaceFields,
+    disableFields: ['autocomplete', 'number', 'date', 'button', 'hidden', 'file', 'header', 'paragraph'],
+    // replaceFields: replaceFields,
     disabledFieldButtons: {
       text: ['copy'],
     },
@@ -227,7 +228,10 @@ jQuery(function($) {
     i18n: {
       override: {
         [defaultLocale]: {
-          number: 'Big Numbers',
+          key: 'Field ID',
+          optionType: 'Option Value Type',
+          dependsOnKey: 'Depends on Field ID',
+          dependsOnValue: 'Depends on value',
         },
       },
     },
@@ -251,7 +255,7 @@ jQuery(function($) {
       const formRenderData = $('.build-wrap').formBuilder('getData', dataType)
       $('.render-wrap').formRender({
         formData: formRenderData,
-        templates: templates,
+        // templates: templates,
         dataType,
       })
       window.sessionStorage.setItem('formData', formRenderData)
