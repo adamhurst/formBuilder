@@ -134,6 +134,7 @@ export default class Helpers {
       const attrs = {
         label: $('.option-label', $option).val(),
         value: $('.option-value', $option).val(),
+        riskScore: $('.option-riskScore', $option).val(),
       }
 
       if (selected) {

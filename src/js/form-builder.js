@@ -192,16 +192,17 @@ const FormBuilder = function(opts, element, $) {
           const controlClass = controls.getClass(field.type)
           field.label = controlClass.label(field.type)
         }
-
         // @todo: any other attrs ever set in aFields? value or selected?
       } else {
         // is dataType XML
         const attrs = $field[0].attributes
         if (!isNew) {
           field.values = $field.children().map((index, elem) => {
+            console.log(elem)
             return {
               label: $(elem).text(),
               value: $(elem).attr('value'),
+              // riskScore: $(elem).attr('riskScore'),
               selected: Boolean($(elem).attr('selected')),
             }
           })
@@ -292,7 +293,7 @@ const FormBuilder = function(opts, element, $) {
     }
 
     if (!values || !values.length) {
-      let defaultOptCount = [1, 2, 3]
+      let defaultOptCount = [1, 2, 3, 4]
       if (['checkbox-group', 'checkbox'].includes(type)) {
         defaultOptCount = [1]
       }
@@ -304,8 +305,10 @@ const FormBuilder = function(opts, element, $) {
       }
     } else {
       // ensure option data is has all required keys
+      console.log('test123', values)
       fieldValues = values.map(option => Object.assign({}, { selected: false }, option))
     }
+    console.log(fieldValues)
 
     const optionActionsWrap = m('div', optionActions, { className: 'option-actions' })
     const options = m('ol', fieldValues.map(option => selectFieldOptions(name, option, isMultiple)), {
@@ -977,6 +980,7 @@ const FormBuilder = function(opts, element, $) {
 
   // Select field html, since there may be multiple
   const selectFieldOptions = function(name, optionData, multipleSelect) {
+    console.log(name, optionData)
     const optionInputType = {
       selected: multipleSelect ? 'checkbox' : 'radio',
     }
