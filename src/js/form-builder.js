@@ -202,7 +202,7 @@ const FormBuilder = function(opts, element, $) {
             return {
               label: $(elem).text(),
               value: $(elem).attr('value'),
-              // riskScore: $(elem).attr('riskScore'),
+              // risk: $(elem).attr('risk'),
               selected: Boolean($(elem).attr('selected')),
             }
           })
@@ -280,7 +280,7 @@ const FormBuilder = function(opts, element, $) {
     const isMultiple = fieldData.multiple || type === 'checkbox-group'
     const optionDataTemplate = label => {
       const optionData = {
-        riskScore: 'Risk score (low | medium | high)',
+        risk: 'Risk score (low | medium | high)',
         label: 'Label',
         value: 'Value',
       }
@@ -984,9 +984,9 @@ const FormBuilder = function(opts, element, $) {
     const optionInputType = {
       selected: multipleSelect ? 'checkbox' : 'radio',
     }
-    const optionDataOrder = ['riskScore', 'value', 'label', 'selected']
+    const optionDataOrder = ['risk', 'value', 'label', 'selected']
     const optionInputs = []
-    const optionTemplate = { label: 'label', value: 'value', riskScore: 'low | medium | high' }
+    const optionTemplate = { label: 'label', value: 'value', risk: 'low | medium | high' }
 
     optionData = Object.assign(optionTemplate, optionData)
 
