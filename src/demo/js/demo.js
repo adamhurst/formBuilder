@@ -32,7 +32,7 @@ const toggleBootStrap = ({ target }) => {
 document.getElementById('toggleBootstrap').addEventListener('click', toggleBootStrap, false)
 
 jQuery(function($) {
-  // const fields = [
+  const fields = [
     // {
     //   type: 'autocomplete',
     //   label: 'Custom Autocomplete',
@@ -49,14 +49,23 @@ jQuery(function($) {
     //     { label: 'Ruby' },
     //   ],
     // },
-    // {
-    //   label: 'Star Rating',
-    //   attrs: {
-    //     type: 'starRating',
-    //   },
-    //   icon: '🌟',
-    // },
-  // ]
+    {
+      label: 'BMI Calculation',
+      optionType: 'riskScore',
+      attrs: {
+        type: 'bmiCalculation',
+      },
+      icon: '📟',
+    },
+    {
+      label: 'Risk Calculation',
+      optionType: 'riskScore',
+      attrs: {
+        type: 'riskCalculation',
+      },
+      icon: '📟',
+    },
+  ]
 
   const replaceFields = [
     // {
@@ -85,16 +94,24 @@ jQuery(function($) {
     'save',
   ]
 
-  // const templates = {
-  //   starRating: function(fieldData) {
-  //     return {
-  //       field: '<span id="' + fieldData.name + '">',
-  //       onRender: () => {
-  //         $(document.getElementById(fieldData.name)).rateYo({ rating: 3.6 })
-  //       },
-  //     }
-  //   },
-  // }
+  const templates = {
+    bmiCalculation: function(fieldData) {
+      return {
+        field: '<span id="' + fieldData.name + '">',
+        onRender: () => {
+          $(document.getElementById(fieldData.name)).append('Weight / Height^2')
+        },
+      }
+    },
+    riskCalculation: function(fieldData) {
+      return {
+        field: '<span id="' + fieldData.name + '">',
+        onRender: () => {
+          $(document.getElementById(fieldData.name)).append('Likelihood x Severity = Outcome')
+        },
+      }
+    },
+  }
 
   const inputSets = [
     {
@@ -212,14 +229,14 @@ jQuery(function($) {
       enable: true,
     },
     sortableControls: true,
-    // fields: fields,
-    // templates: templates,
+    fields: fields,
+    templates: templates,
     // inputSets: inputSets,
     typeUserDisabledAttrs: typeUserDisabledAttrs,
     // typeUserAttrs: typeUserAttrs,
     disableInjectedStyle: false,
     actionButtons: actionButtons,
-    disableFields: ['autocomplete', 'number', 'date', 'button', 'hidden', 'file', 'header', 'paragraph'],
+    disableFields: ['autocomplete', 'number', 'date', 'button', 'hidden', 'file', 'paragraph'],
     // replaceFields: replaceFields,
     disabledFieldButtons: {
       text: ['copy'],

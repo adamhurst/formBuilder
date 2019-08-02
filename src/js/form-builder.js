@@ -305,10 +305,8 @@ const FormBuilder = function(opts, element, $) {
       }
     } else {
       // ensure option data is has all required keys
-      console.log('test123', values)
       fieldValues = values.map(option => Object.assign({}, { selected: false }, option))
     }
-    console.log(fieldValues)
 
     const optionActionsWrap = m('div', optionActions, { className: 'option-actions' })
     const options = m('ol', fieldValues.map(option => selectFieldOptions(name, option, isMultiple)), {
@@ -324,6 +322,7 @@ const FormBuilder = function(opts, element, $) {
   const defaultFieldAttrs = type => {
     const lmcVars = ['dependsOnKey', 'dependsOnValue', 'key']
     const defaultAttrs = ['required', 'label', 'description', 'placeholder', 'value'].concat(lmcVars)
+    const calcAttrs = ['required', 'label', 'description', 'value', 'optionType'].concat(lmcVars)
     const noValFields = ['header', 'paragraph', 'file', 'autocomplete'].concat(d.optionFields)
 
     const valueField = !noValFields.includes(type)
@@ -345,7 +344,9 @@ const FormBuilder = function(opts, element, $) {
       text: defaultAttrs.concat(['maxlength']),
       date: defaultAttrs,
       file: defaultAttrs.concat(['multiple']),
-      header: ['label', 'className', 'access'].concat(lmcVars),
+      bmiCalculation: calcAttrs,
+      riskCalculation: calcAttrs,
+      header: ['label', 'description'].concat(lmcVars),
       hidden: ['value', 'access'].concat(lmcVars),
       paragraph: ['label', 'className', 'access'].concat(lmcVars),
       number: defaultAttrs.concat(['min', 'max', 'step']),
@@ -363,7 +364,7 @@ const FormBuilder = function(opts, element, $) {
     }
 
     // Help Text / Description Field
-    if (['header', 'paragraph', 'button'].includes(type)) {
+    if (['paragraph', 'button'].includes(type)) {
       removeFromArray('description', typeAttrs)
     }
 
@@ -401,6 +402,7 @@ const FormBuilder = function(opts, element, $) {
       dependsOnKey: () => textAttribute('dependsOnKey', values),
       dependsOnValue: () => textAttribute('dependsOnValue', values),
       optionType: () => selectAttribute('optionType', values, [
+        { value: 'riskScore', label: 'Risk Score'},
         { value: 'boolean', label: 'Boolean'},
         { value: 'number', label: 'Number'},
         { value: 'integer', label: 'Integer'},
