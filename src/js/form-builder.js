@@ -320,7 +320,7 @@ const FormBuilder = function(opts, element, $) {
   }
 
   const defaultFieldAttrs = type => {
-    const lmcVars = ['dependsOnKey', 'dependsOnValue', 'key']
+    const lmcVars = ['dependsOnKey', 'dependsOnValue', 'key', 'hasComment']
     const defaultAttrs = ['required', 'label', 'description', 'placeholder', 'value'].concat(lmcVars)
     const calcAttrs = ['required', 'label', 'description', 'value', 'optionType'].concat(lmcVars)
     const noValFields = ['header', 'paragraph', 'file', 'autocomplete'].concat(d.optionFields)
@@ -408,6 +408,9 @@ const FormBuilder = function(opts, element, $) {
         { value: 'integer', label: 'Integer'},
         { value: 'string', label: 'Text'},
       ]),
+      hasComment: () => boolAttribute('hasComment', values, {
+        first: 'Has comment'
+      }),
       // showIfChecked: () => textAttribute('showIfChecked', values),
 
       description: () => textAttribute('description', values),
