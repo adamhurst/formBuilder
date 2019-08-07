@@ -320,7 +320,7 @@ const FormBuilder = function(opts, element, $) {
   }
 
   const defaultFieldAttrs = type => {
-    const lmcVars = ['dependsOnKey', 'dependsOnValue', 'key', 'hasComment']
+    const lmcVars = ['dependsOnKey', 'dependsOnValue', 'key', 'hasComment', 'suggestedActions']
     const defaultAttrs = ['required', 'label', 'description', 'placeholder', 'value'].concat(lmcVars)
     const calcAttrs = ['required', 'label', 'description', 'value', 'optionType'].concat(lmcVars)
     const noValFields = ['header', 'paragraph', 'file', 'autocomplete'].concat(d.optionFields)
@@ -351,6 +351,7 @@ const FormBuilder = function(opts, element, $) {
       paragraph: ['label', 'className', 'access'].concat(lmcVars),
       number: defaultAttrs.concat(['min', 'max', 'step']),
       select: defaultAttrs.concat(['multiple', 'options', 'optionType']),
+      suggestedActions: ['paragraph'].concat(calcAttrs),
       textarea: defaultAttrs.concat(['maxlength', 'rows']),
     }
 

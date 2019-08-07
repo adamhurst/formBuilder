@@ -65,6 +65,14 @@ jQuery(function($) {
       },
       icon: '📟',
     },
+    {
+      label: 'Suggested Actions',
+      optionType: 'string',
+      attrs: {
+        type: 'suggestedActions',
+      },
+      icon: '📝'
+    }
   ]
 
   const replaceFields = [
@@ -96,6 +104,14 @@ jQuery(function($) {
 
   const templates = {
     bmiCalculation: function(fieldData) {
+      return {
+        field: '<span id="' + fieldData.name + '">',
+        onRender: () => {
+          $(document.getElementById(fieldData.name)).append('Weight / Height^2')
+        },
+      }
+    },
+    suggestedActions: function (fieldData) {
       return {
         field: '<span id="' + fieldData.name + '">',
         onRender: () => {
