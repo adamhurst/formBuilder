@@ -320,7 +320,7 @@ const FormBuilder = function(opts, element, $) {
   }
 
   const defaultFieldAttrs = type => {
-    const lmcVars = ['dependsOnKey', 'dependsOnValue', 'key', 'hasComment', 'suggestedActions']
+    const lmcVars = ['dependsOnKey', 'dependsOnValue', 'key', 'hasComment']
     const defaultAttrs = ['required', 'label', 'description', 'placeholder', 'value'].concat(lmcVars)
     const calcAttrs = ['required', 'label', 'description', 'value', 'optionType'].concat(lmcVars)
     const noValFields = ['header', 'paragraph', 'file', 'autocomplete'].concat(d.optionFields)
@@ -351,7 +351,7 @@ const FormBuilder = function(opts, element, $) {
       paragraph: ['label', 'className', 'access'].concat(lmcVars),
       number: defaultAttrs.concat(['min', 'max', 'step']),
       select: defaultAttrs.concat(['multiple', 'options', 'optionType']),
-      suggestedActions: ['paragraph'].concat(calcAttrs),
+      suggestedActions: ['label', 'description', 'suggestedActions'].concat(lmcVars),
       textarea: defaultAttrs.concat(['maxlength', 'rows']),
     }
 
@@ -423,6 +423,7 @@ const FormBuilder = function(opts, element, $) {
       name: isHidden => textAttribute('name', values, isHidden),
       value: () => textAttribute('value', values),
       maxlength: () => numberAttribute('maxlength', values),
+      suggestedActions: () => textAttribute('suggestedActions', values),
       access: () => {
         const rolesDisplay = values.role ? 'style="display:block"' : ''
         const availableRoles = [`<div class="available-roles" ${rolesDisplay}>`]
@@ -840,7 +841,11 @@ const FormBuilder = function(opts, element, $) {
       } else {
         inputConfig.value = attrVal
         inputConfig.type = 'text'
-        attributefield += `<input ${attrString(inputConfig)}>`
+        if (attribute === 'suggestedActions') {
+          attributefield += `<textarea ${attrString(inputConfig)}></textarea>`
+        } else {
+          attributefield += `<input ${attrString(inputConfig)}>`
+        }
       }
 
       const inputWrap = `<div class="input-wrap">${attributefield}</div>`

@@ -115,7 +115,7 @@ jQuery(function($) {
       return {
         field: '<span id="' + fieldData.name + '">',
         onRender: () => {
-          $(document.getElementById(fieldData.name)).append('Weight / Height^2')
+          $(document.getElementById(fieldData.name)).append('When a user chooses a specific option')
         },
       }
     },
@@ -265,6 +265,7 @@ jQuery(function($) {
           optionType: 'Option Value Type',
           dependsOnKey: 'Depends on Field ID',
           dependsOnValue: 'Depends on value',
+          suggestedActions: 'Suggested Actions'
         },
       },
     },
