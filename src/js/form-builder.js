@@ -345,6 +345,7 @@ const FormBuilder = function(opts, element, $) {
       date: defaultAttrs,
       file: defaultAttrs.concat(['multiple']),
       bmiCalculation: calcAttrs,
+      mustCalculation: ['key', 'hasComment'],
       riskCalculation: calcAttrs,
       header: ['label', 'description'].concat(lmcVars),
       hidden: ['value', 'access'].concat(lmcVars),

@@ -58,6 +58,13 @@ jQuery(function($) {
       icon: '📟',
     },
     {
+      label: 'MUST Calculation',
+      attrs: {
+        type: 'mustCalculation',
+      },
+      icon: '📟',
+    },
+    {
       label: 'Risk Calculation',
       optionType: 'riskScore',
       attrs: {
@@ -108,6 +115,14 @@ jQuery(function($) {
         field: '<span id="' + fieldData.name + '">',
         onRender: () => {
           $(document.getElementById(fieldData.name)).append('Weight / Height^2')
+        },
+      }
+    },
+    mustCalculation: function (fieldData) {
+      return {
+        field: '<span id="' + fieldData.name + '">',
+        onRender: () => {
+          $(document.getElementById(fieldData.name)).append('This field has pre-defined attributes')
         },
       }
     },
