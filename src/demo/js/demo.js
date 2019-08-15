@@ -122,7 +122,7 @@ jQuery(function($) {
       return {
         field: '<span id="' + fieldData.name + '">',
         onRender: () => {
-          $(document.getElementById(fieldData.name)).append('This field has pre-defined attributes')
+          $(document.getElementById(fieldData.name)).append('MUST Calculation')
         },
       }
     },
