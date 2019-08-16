@@ -122,7 +122,7 @@ jQuery(function($) {
       return {
         field: '<span id="' + fieldData.name + '">',
         onRender: () => {
-          $(document.getElementById(fieldData.name)).append('MUST Calculation')
+          $(document.getElementById(fieldData.name)).append('MUST Calculation - this field has pre-defined risk values')
         },
       }
     },
@@ -270,7 +270,6 @@ jQuery(function($) {
     disableFields: ['autocomplete', 'number', 'date', 'button', 'hidden', 'file', 'paragraph'],
     // replaceFields: replaceFields,
     disabledFieldButtons: {
-      text: ['copy'],
     },
     controlPosition: 'right', // left|right,
     i18n: {
