@@ -19,6 +19,7 @@ import events from './events'
 import { config } from './config'
 import control from './control'
 import controlCustom from './control/custom'
+import { MUST_VALUES, RISK_MATRIX_VALUES } from './constants'
 
 /**
  * Utilities specific to form-builder.js
@@ -232,29 +233,16 @@ export default class Helpers {
           fieldData = trimObj(fieldData)
 
           const multipleField = fieldData.type && fieldData.type.match(d.optionFieldsRegEx)
-          const isMust = fieldData.type === 'mustCalculation'
+
           if (multipleField) {
             fieldData.values = _this.fieldOptionData($field)
           }
-          if (isMust) {
-            fieldData.values = [
-              {
-                label: 'Low risk',
-                risk: 'low',
-                value: 0
-              },
-              {
-                label: 'Medium risk',
-                risk: 'medium',
-                value: 1
-              },
-              {
-                label: 'High risk',
-                risk: 'high',
-                value: 2
-              }
-            ]
+          if (fieldData.type === 'mustCalculation') {
+            fieldData.values = MUST_VALUES
             fieldData.optionType = 'riskScore'
+          }
+          if (fieldData.type === 'riskCalculation') {
+            fieldData.values = RISK_MATRIX_VALUES
           }
 
           formData.push(fieldData)
