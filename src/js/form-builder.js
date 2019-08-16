@@ -909,9 +909,9 @@ const FormBuilder = function(opts, element, $) {
       }),
     ]
 
-    if (disabledFieldButtons && Array.isArray(disabledFieldButtons)) {
-      fieldButtons = fieldButtons.filter(btnData => !disabledFieldButtons.includes(btnData.type))
-    }
+    // if (disabledFieldButtons && Array.isArray(disabledFieldButtons)) {
+    //   fieldButtons = fieldButtons.filter(btnData => !disabledFieldButtons.includes(btnData.type))
+    // }
 
     const liContents = [m('div', fieldButtons, { className: 'field-actions' })]
 
