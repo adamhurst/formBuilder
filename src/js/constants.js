@@ -13,7 +13,27 @@ export const MUST_VALUES = [
         label: 'High risk',
         risk: 'high',
         value: 2
-    }
+    },
+    {
+        label: 'High risk',
+        risk: 'high',
+        value: 3
+    },
+    {
+        label: 'High risk',
+        risk: 'high',
+        value: 4
+    },
+    {
+        label: 'High risk',
+        risk: 'high',
+        value: 5
+    },
+    {
+        label: 'High risk',
+        risk: 'high',
+        value: 6
+    },
 ]
 
 export const RISK_MATRIX_VALUES = [
