@@ -344,6 +344,7 @@ const FormBuilder = function(opts, element, $) {
       text: defaultAttrs.concat(['maxlength']),
       date: defaultAttrs,
       file: defaultAttrs.concat(['multiple']),
+      riskRange: ['risk', 'low', 'high'],
       bmiCalculation: calcAttrs,
       mustCalculation: ['key'],
       riskCalculation: calcAttrs,
@@ -401,6 +402,15 @@ const FormBuilder = function(opts, element, $) {
 
       // Custom LMC Fields. Field labels are set in the demo.js file
       key: () => textAttribute('key', values),
+      risk: () => selectAttribute('risk', values, [
+        { value: 'na', label: 'NA'},
+        { value: 'low', label: 'Low'},
+        { value: 'medium', label: 'Medium'},
+        { value: 'high', label: 'High'},
+        { value: 'severe', label: 'Severe'},
+      ]),
+      low: () => numberAttribute('low', values),
+      high: () => numberAttribute('high', values),
       dependsOnKey: () => textAttribute('dependsOnKey', values),
       dependsOnValue: () => textAttribute('dependsOnValue', values),
       optionType: () => selectAttribute('optionType', values, [
@@ -886,7 +896,7 @@ const FormBuilder = function(opts, element, $) {
   // Append the new field to the editor
   const appendNewField = function(values, isNew = true) {
     const type = values.type || 'text'
-    const label = values.label || (isNew ? i18n.get(type) || mi18n.get('label') : '')
+    const label = values.label || (isNew && i18n ? i18n.get(type) || mi18n.get('label') : '')
     const disabledFieldButtons = opts.disabledFieldButtons[type] || values.disabledFieldButtons
     let fieldButtons = [
       m('a', null, {

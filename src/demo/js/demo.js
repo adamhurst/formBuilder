@@ -50,6 +50,11 @@ jQuery(function($) {
     //   ],
     // },
     {
+      label: 'Risk Range',
+      type: 'riskRange',
+      icon: '📟',
+    },
+    {
       label: 'BMI Calculation',
       optionType: 'riskScore',
       attrs: {
@@ -110,6 +115,14 @@ jQuery(function($) {
   ]
 
   const templates = {
+    riskRange: function(fieldData) {
+      return {
+        field: '<span id="' + fieldData.name + '">',
+        onRender: () => {
+          $(document.getElementById(fieldData.name)).append('na | low | medium | high | severe')
+        },
+      }
+    },
     bmiCalculation: function(fieldData) {
       return {
         field: '<span id="' + fieldData.name + '">',
@@ -276,6 +289,9 @@ jQuery(function($) {
       override: {
         [defaultLocale]: {
           key: 'Field ID',
+          riskLabel: 'Risk Label',
+          rangeLow: 'Lower Threshold',
+          rangeHigh: 'Higher Threshold',
           optionType: 'Option Value Type',
           dependsOnKey: 'Depends on Field ID',
           dependsOnValue: 'Depends on value',
