@@ -18,7 +18,7 @@ window.fbEditors = {
  * @return {Object}       Object trimmed of null or undefined values
  */
 export const trimObj = function(attrs) {
-  const xmlRemove = [null, undefined, '']
+  const xmlRemove = [null, undefined, '', false, 'false']
   for (const attr in attrs) {
     if (xmlRemove.includes(attrs[attr])) {
       delete attrs[attr]
