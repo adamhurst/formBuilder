@@ -325,7 +325,8 @@ const FormBuilder = function(opts, element, $) {
     let lmcVars = ['hasComment', 'dependsOnKey', 'dependsOnValue', 'key']
     const isPreAssessment = opts.formType === 'preAssessment'
     if (isPreAssessment) {
-      lmcVars = lmcVars.concat(['outputQuestionHidden', 'outputQuestionFormat'])
+      lmcVars = [...lmcVars, 'outputQuestionHidden', 'outputQuestion']
+      console.log('lmcVars', lmcVars)
     }
     const defaultAttrs = ['required', 'label', 'description', 'placeholder', 'value'].concat(lmcVars)
     const calcAttrs = ['required', 'label', 'description', 'value', 'optionType'].concat(lmcVars)
@@ -334,7 +335,7 @@ const FormBuilder = function(opts, element, $) {
     const valueField = !noValFields.includes(type)
 
     const typeAttrsMap = {
-      suggestedActions: ['label', 'description', 'suggestedActions'].concat(lmcVars),
+      suggestedActions: ['label', 'description', 'suggestedActions', 'dependsOnKey', 'dependsOnValue'],
       header: ['label', 'description'].concat(lmcVars),
       paragraph: ['label', 'className', 'access'].concat(lmcVars),
       checkbox: [
@@ -348,9 +349,9 @@ const FormBuilder = function(opts, element, $) {
         'other',
         'optionType',
       ].concat(lmcVars),
-      text: isPreAssessment ? defaultAttrs.concat(['outputType']) : defaultAttrs,
-      textarea: isPreAssessment ? defaultAttrs.concat(['outputType']) : defaultAttrs,
-      date: isPreAssessment ? defaultAttrs.concat(['outputType']) : defaultAttrs,
+      text: isPreAssessment ? defaultAttrs.concat(['outputType', 'outputQuestionHidden', 'outputQuestion']) : defaultAttrs,
+      textarea: isPreAssessment ? defaultAttrs.concat(['outputType', 'outputQuestionHidden', 'outputQuestion']) : defaultAttrs,
+      date: isPreAssessment ? defaultAttrs.concat(['outputType', 'outputQuestionHidden', 'outputQuestion']) : defaultAttrs,
       select: defaultAttrs.concat(['options', 'optionType']),
       bmiCalculation: calcAttrs,
       mustCalculation: ['key'],
@@ -426,7 +427,7 @@ const FormBuilder = function(opts, element, $) {
         { value: 'severe', label: 'Severe'},
       ]),
       outputQuestionHidden: () => boolAttribute('outputQuestionHidden', values, { first: 'Hide Q in output' }),
-      outputQuestionFormat: () => textAttribute('outputQuestionFormat', values, { first: 'Output question' }),
+      outputQuestion: () => textAttribute('outputQuestion', values),
       outputType: () => selectAttribute('outputType', values, [
         { value: 'needs', label: 'Needs'},
         { value: 'strengths', label: 'Strengths'},

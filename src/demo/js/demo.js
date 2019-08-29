@@ -264,7 +264,7 @@ jQuery(function($) {
     // subtypes: {
     //   text: ['datetime-local'],
     // },
-    formType: 'riskAssessment',
+    formType: 'preAssessment',
     onSave: toggleEdit,
     onAddField: fieldId => {
       document.getElementById('currentFieldId').value = fieldId
@@ -296,7 +296,8 @@ jQuery(function($) {
           optionType: 'Option Value Type',
           dependsOnKey: 'Depends on Field ID',
           dependsOnValue: 'Depends on value',
-          suggestedActions: 'Suggested Actions'
+          suggestedActions: 'Suggested Actions',
+          outputQuestion: 'Output Question Format'
         },
       },
     },
