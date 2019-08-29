@@ -136,6 +136,8 @@ export default class Helpers {
         label: $('.option-label', $option).val(),
         value: $('.option-value', $option).val(),
         risk: $('.option-risk', $option).val(),
+        output: $('.option-output', $option).val(),
+        outputType: $('.option-outputType', $option).val(),
       }
 
       if (selected) {

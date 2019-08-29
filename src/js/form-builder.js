@@ -280,7 +280,9 @@ const FormBuilder = function(opts, element, $) {
     const isMultiple = fieldData.multiple || type === 'checkbox-group'
     const optionDataTemplate = label => {
       const optionData = {
-        risk: 'Risk score (low | medium | high)',
+        outputType: 'na',
+        output: '$label$',
+        risk: 'na | low | medium | high | severe',
         label: 'Label',
         value: 'Value',
       }
@@ -320,7 +322,11 @@ const FormBuilder = function(opts, element, $) {
   }
 
   const defaultFieldAttrs = type => {
-    const lmcVars = ['dependsOnKey', 'dependsOnValue', 'key', 'hasComment']
+    let lmcVars = ['hasComment', 'dependsOnKey', 'dependsOnValue', 'key']
+    const isPreAssessment = opts.formType === 'preAssessment'
+    if (isPreAssessment) {
+      lmcVars = lmcVars.concat(['outputQuestionHidden', 'outputQuestionFormat'])
+    }
     const defaultAttrs = ['required', 'label', 'description', 'placeholder', 'value'].concat(lmcVars)
     const calcAttrs = ['required', 'label', 'description', 'value', 'optionType'].concat(lmcVars)
     const noValFields = ['header', 'paragraph', 'file', 'autocomplete'].concat(d.optionFields)
@@ -328,33 +334,33 @@ const FormBuilder = function(opts, element, $) {
     const valueField = !noValFields.includes(type)
 
     const typeAttrsMap = {
-      autocomplete: defaultAttrs.concat(['options', 'requireValidOption']),
-      button: ['label', 'style', 'className', 'value', 'access'].concat(lmcVars),
+      suggestedActions: ['label', 'description', 'suggestedActions'].concat(lmcVars),
+      header: ['label', 'description'].concat(lmcVars),
+      paragraph: ['label', 'className', 'access'].concat(lmcVars),
       checkbox: [
         'required',
         'label',
         'description',
+        'options',
         'toggle',
         'inline',
         'access',
         'other',
-        'options',
         'optionType',
       ].concat(lmcVars),
-      text: defaultAttrs.concat(['maxlength']),
-      date: defaultAttrs,
-      file: defaultAttrs.concat(['multiple']),
-      riskRange: ['risk', 'low', 'high'],
+      text: isPreAssessment ? defaultAttrs.concat(['outputType']) : defaultAttrs,
+      textarea: isPreAssessment ? defaultAttrs.concat(['outputType']) : defaultAttrs,
+      date: isPreAssessment ? defaultAttrs.concat(['outputType']) : defaultAttrs,
+      select: defaultAttrs.concat(['options', 'optionType']),
       bmiCalculation: calcAttrs,
       mustCalculation: ['key'],
       riskCalculation: calcAttrs,
-      header: ['label', 'description'].concat(lmcVars),
+      file: defaultAttrs.concat(['multiple']),
+      riskRange: ['risk', 'low', 'high'],
+      button: ['label', 'style', 'className', 'value', 'access'].concat(lmcVars),
+      autocomplete: defaultAttrs.concat(['options', 'requireValidOption']),
       hidden: ['value', 'access'].concat(lmcVars),
-      paragraph: ['label', 'className', 'access'].concat(lmcVars),
       number: defaultAttrs.concat(['min', 'max', 'step']),
-      select: defaultAttrs.concat(['multiple', 'options', 'optionType']),
-      suggestedActions: ['label', 'description', 'suggestedActions'].concat(lmcVars),
-      textarea: defaultAttrs.concat(['maxlength', 'rows']),
     }
 
     typeAttrsMap['checkbox-group'] = typeAttrsMap.checkbox
@@ -385,6 +391,16 @@ const FormBuilder = function(opts, element, $) {
    */
   const advFields = values => {
     const { type } = values
+    const optionTypes = [
+      { value: 'string', label: 'Text'},
+      { value: 'number', label: 'Number'},
+      { value: 'integer', label: 'Integer'},
+      { value: 'boolean', label: 'Boolean'},
+    ]
+    if (opts.formType === 'riskAssessment') {
+      optionTypes.push({ value: 'riskScore', label: 'Risk Score'})
+    }
+
     const advFields = []
     const fieldAttrs = defaultFieldAttrs(type)
     const advFieldMap = {
@@ -409,17 +425,18 @@ const FormBuilder = function(opts, element, $) {
         { value: 'high', label: 'High'},
         { value: 'severe', label: 'Severe'},
       ]),
+      outputQuestionHidden: () => boolAttribute('outputQuestionHidden', values, { first: 'Hide Q in output' }),
+      outputQuestionFormat: () => textAttribute('outputQuestionFormat', values, { first: 'Output question' }),
+      outputType: () => selectAttribute('outputType', values, [
+        { value: 'needs', label: 'Needs'},
+        { value: 'strengths', label: 'Strengths'},
+        { value: 'na', label: 'NA'}
+      ]),
       low: () => numberAttribute('low', values),
       high: () => numberAttribute('high', values),
       dependsOnKey: () => textAttribute('dependsOnKey', values),
       dependsOnValue: () => textAttribute('dependsOnValue', values),
-      optionType: () => selectAttribute('optionType', values, [
-        { value: 'riskScore', label: 'Risk Score'},
-        { value: 'boolean', label: 'Boolean'},
-        { value: 'number', label: 'Number'},
-        { value: 'integer', label: 'Integer'},
-        { value: 'string', label: 'Text'},
-      ]),
+      optionType: () => selectAttribute('optionType', values, optionTypes),
       hasComment: () => boolAttribute('hasComment', values, {
         first: 'Has comment'
       }),
@@ -1002,33 +1019,68 @@ const FormBuilder = function(opts, element, $) {
 
   // Select field html, since there may be multiple
   const selectFieldOptions = function(name, optionData, multipleSelect) {
-    console.log(name, optionData)
     const optionInputType = {
+      outputType: 'textarea',
       selected: multipleSelect ? 'checkbox' : 'radio',
     }
-    const optionDataOrder = ['risk', 'value', 'label', 'selected']
+    let optionDataOrder = ['output', 'risk', 'value', 'label', 'outputType']
     const optionInputs = []
-    const optionTemplate = { label: 'label', value: 'value', risk: 'low | medium | high' }
+    const optionTemplate = {
+      label: 'label', 
+      value: 'value',
+    }
+    if (opts.formType === 'riskAssessment') {
+      optionTemplate.risk = 'na | low | medium | high | severe'
+      optionDataOrder = ['value', 'label', 'risk']
+    } else if (opts.formType === 'preAssessment') {
+      optionTemplate.outputType = 'Output Type'
+      optionTemplate.output = '$label$'
+      optionDataOrder = ['value', 'label', 'output', 'outputType']
+    } else {
+      optionDataOrder = ['value', 'label']
+    }
 
     optionData = Object.assign(optionTemplate, optionData)
 
     for (let i = optionDataOrder.length - 1; i >= 0; i--) {
       const prop = optionDataOrder[i]
       if (optionData.hasOwnProperty(prop)) {
+        
         const attrs = {
           type: optionInputType[prop] || 'text',
           className: 'option-' + prop,
           value: optionData[prop],
           name: name + '-option',
         }
-
         attrs.placeholder = mi18n.get(`placeholder.${prop}`) || ''
+        if (prop === 'outputType') {
+          const opts = ['na', 'strenths', 'needs'].map(val => m('option', val, { value: val }))
+          const select = m('select', opts, {
+            value: optionData[prop],
+            className: 'option-outputType'
+          }).outerHTML
+          const inputWrap = `<div style="padding-left: 10px; padding-bottom: 10px;">Output type: ${select}</div>`
+          optionInputs.push(inputWrap)
+        } else if (prop === 'output') {
+          const el = m('input', null, attrs).outerHTML
+          optionInputs.push(`<div style="padding-left: 10px; padding-bottom: 10px;">Output: ${el}</div>`)
+        } else if (prop === 'risk') {
+          const opts = ['na', 'low', 'medium', 'high', 'severe'].map(val => m('option', val, { value: val }))
+          const select = m('select', opts, {
+            value: optionData[prop],
+            className: 'option-risk'
+          }).outerHTML
 
-        if (prop === 'selected' && optionData.selected === true) {
-          attrs.checked = optionData.selected
+          const inputWrap = `<div style="padding-left: 10px; padding-bottom: 10px;">Risk: ${select}</div>`
+          optionInputs.push(inputWrap)
+        } else {
+          if (prop === 'selected' && optionData.selected === true) {
+            attrs.checked = optionData.selected
+          }
+  
+          optionInputs.push(m('input', null, attrs))
         }
-
-        optionInputs.push(m('input', null, attrs))
+        
       }
     }
 
@@ -1346,14 +1398,18 @@ const FormBuilder = function(opts, element, $) {
     const $multiple = $('[name="multiple"]', $optionWrap)
     const $firstOption = $('.option-selected:eq(0)', $optionWrap)
     let isMultiple = false
-
-    if ($multiple.length) {
-      isMultiple = $multiple.prop('checked')
+    let name
+    if ($firstOption && $firstOption.attr('name')) {
+      if ($multiple.length) {
+        isMultiple = $multiple.prop('checked')
+      } else {
+        isMultiple = $firstOption.attr('type') === 'checkbox'
+      }
+  
+      name = $firstOption.attr('name').replace(/-option$/, '')
     } else {
-      isMultiple = $firstOption.attr('type') === 'checkbox'
+      name = ''
     }
-
-    const name = $firstOption.attr('name').replace(/-option$/, '')
 
     $('.sortable-options', $optionWrap).append(selectFieldOptions(name, false, isMultiple))
   })

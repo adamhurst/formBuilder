@@ -264,6 +264,7 @@ jQuery(function($) {
     // subtypes: {
     //   text: ['datetime-local'],
     // },
+    formType: 'riskAssessment',
     onSave: toggleEdit,
     onAddField: fieldId => {
       document.getElementById('currentFieldId').value = fieldId

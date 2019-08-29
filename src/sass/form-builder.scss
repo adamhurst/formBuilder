@@ -21,13 +21,24 @@
 }
 
 .option-label {
-  width: 64% !important;
+  width: 80% !important;
 }
 .option-value {
   width: 10% !important;
 }
 .option-risk {
-  width: 20% !important;
+  margin-top: 4px !important;
+  width: 30% !important;
+}
+.option-output {
+  margin-top: 4px !important;
+  width: 40% !important;
+}
+.sortable-options {
+  background: black !important;
+}
+.ui-sortable-handle {
+  background: #f9f9f9 !important;
 }
 .fld-key {
   opacity: 0.6;
