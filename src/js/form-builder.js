@@ -198,7 +198,6 @@ const FormBuilder = function(opts, element, $) {
         const attrs = $field[0].attributes
         if (!isNew) {
           field.values = $field.children().map((index, elem) => {
-            console.log(elem)
             return {
               label: $(elem).text(),
               value: $(elem).attr('value'),
@@ -281,7 +280,7 @@ const FormBuilder = function(opts, element, $) {
     const optionDataTemplate = label => {
       const optionData = {
         outputType: 'na',
-        output: '$label$',
+        output: '',
         risk: 'na | low | medium | high | severe',
         label: 'Label',
         value: 'Value',
@@ -1033,8 +1032,8 @@ const FormBuilder = function(opts, element, $) {
       optionTemplate.risk = 'na | low | medium | high | severe'
       optionDataOrder = ['value', 'label', 'risk']
     } else if (opts.formType === 'preAssessment') {
-      optionTemplate.outputType = 'Output Type'
-      optionTemplate.output = '$label$'
+      optionTemplate.outputType = 'na'
+      optionTemplate.output = ''
       optionDataOrder = ['value', 'label', 'output', 'outputType']
     } else {
       optionDataOrder = ['value', 'label']
@@ -1053,21 +1052,38 @@ const FormBuilder = function(opts, element, $) {
           name: name + '-option',
         }
         attrs.placeholder = mi18n.get(`placeholder.${prop}`) || ''
+        
         if (prop === 'outputType') {
-          const opts = ['na', 'strengths', 'needs'].map(val => m('option', val, { value: val }))
+          const opts = ['na', 'strengths', 'needs'].map(val => {
+            const attrs = { value: undefined }
+            if (optionData[prop] === val) {
+              attrs.selected = true
+            }
+            return  m('option', val, attrs)
+          })
+
           const select = m('select', opts, {
             value: optionData[prop],
             className: 'option-outputType'
           }).outerHTML
+
           const inputWrap = `<div style="padding-left: 10px; padding-bottom: 10px;">Output type: ${select}</div>`
           optionInputs.push(inputWrap)
         } else if (prop === 'output') {
           const el = m('input', null, attrs).outerHTML
           optionInputs.push(`<div style="padding-left: 10px; padding-bottom: 10px;">Output: ${el}</div>`)
         } else if (prop === 'risk') {
-          const opts = ['na', 'low', 'medium', 'high', 'severe'].map(val => m('option', val, { value: val }))
+          const opts = ['na', 'low', 'medium', 'high', 'severe'].map(val => {
+            const attrs = { value: undefined }
+            if (optionData[prop] === val) {
+              attrs.selected = true
+            }
+            return  m('option', val, attrs)
+          })
           const select = m('select', opts, {
             value: optionData[prop],
+            val: optionData[prop],
+            selected: optionData[prop],
             className: 'option-risk'
           }).outerHTML
 

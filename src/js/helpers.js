@@ -128,7 +128,6 @@ export default class Helpers {
   fieldOptionData(field) {
     const options = []
     const $options = $('.sortable-options li', field)
-
     $options.each(i => {
       const $option = $($options[i])
       const selected = $('.option-selected', $option).is(':checked')
@@ -137,13 +136,12 @@ export default class Helpers {
         value: $('.option-value', $option).val(),
         risk: $('.option-risk', $option).val(),
         output: $('.option-output', $option).val(),
-        outputType: $('.option-outputType', $option).val(),
+        outputType: $('.option-outputType option:selected', $option).text(),
       }
 
       if (selected) {
         attrs.selected = selected
       }
-
       options.push(attrs)
     })
 
@@ -238,6 +236,7 @@ export default class Helpers {
 
           if (multipleField) {
             fieldData.values = _this.fieldOptionData($field)
+            console.log('fieldData', fieldData)
           }
           if (fieldData.type === 'mustCalculation') {
             fieldData.values = MUST_VALUES
