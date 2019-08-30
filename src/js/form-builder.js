@@ -326,7 +326,6 @@ const FormBuilder = function(opts, element, $) {
     const isPreAssessment = opts.formType === 'preAssessment'
     if (isPreAssessment) {
       lmcVars = [...lmcVars, 'outputQuestionHidden', 'outputQuestion']
-      console.log('lmcVars', lmcVars)
     }
     const defaultAttrs = ['required', 'label', 'description', 'placeholder', 'value'].concat(lmcVars)
     const calcAttrs = ['required', 'label', 'description', 'value', 'optionType'].concat(lmcVars)
@@ -1055,7 +1054,7 @@ const FormBuilder = function(opts, element, $) {
         }
         attrs.placeholder = mi18n.get(`placeholder.${prop}`) || ''
         if (prop === 'outputType') {
-          const opts = ['na', 'strenths', 'needs'].map(val => m('option', val, { value: val }))
+          const opts = ['na', 'strengths', 'needs'].map(val => m('option', val, { value: val }))
           const select = m('select', opts, {
             value: optionData[prop],
             className: 'option-outputType'
