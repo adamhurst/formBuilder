@@ -317,7 +317,11 @@ const FormBuilder = function(opts, element, $) {
 
     fieldOptions.push(optionsWrap)
 
-    return m('div', fieldOptions, { className: 'form-group field-options' }).outerHTML
+    const className = type.match(/checkbox/) 
+      ? 'form-group field-options checkbox'
+      : 'form-group field-options'
+
+    return m('div', fieldOptions, { className }).outerHTML
   }
 
   const defaultFieldAttrs = type => {
@@ -346,6 +350,9 @@ const FormBuilder = function(opts, element, $) {
         'access',
         'other',
         'optionType',
+        'outputType',
+        'outputQuestionHidden',
+        'outputQuestion',
       ].concat(lmcVars),
       text: isPreAssessment ? defaultAttrs.concat(['outputType', 'outputQuestionHidden', 'outputQuestion']) : defaultAttrs,
       textarea: isPreAssessment ? defaultAttrs.concat(['outputType', 'outputQuestionHidden', 'outputQuestion']) : defaultAttrs,
@@ -1032,9 +1039,13 @@ const FormBuilder = function(opts, element, $) {
       optionTemplate.risk = 'na | low | medium | high | severe'
       optionDataOrder = ['value', 'label', 'risk']
     } else if (opts.formType === 'preAssessment') {
-      optionTemplate.outputType = 'na'
       optionTemplate.output = ''
-      optionDataOrder = ['value', 'label', 'output', 'outputType']
+      if (name.match(/checkbox/)) {
+        optionDataOrder = ['value', 'label', 'output']
+      } else {
+        optionTemplate.outputType = 'na'
+        optionDataOrder = ['value', 'label', 'output', 'outputType']
+      }
     } else {
       optionDataOrder = ['value', 'label']
     }
@@ -1423,6 +1434,8 @@ const FormBuilder = function(opts, element, $) {
       }
   
       name = $firstOption.attr('name').replace(/-option$/, '')
+    } else if ($optionWrap.hasClass('checkbox')) {
+      name = 'checkbox'
     } else {
       name = ''
     }
