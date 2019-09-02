@@ -340,7 +340,32 @@ const FormBuilder = function(opts, element, $) {
       suggestedActions: ['label', 'description', 'suggestedActions', 'dependsOnKey', 'dependsOnValue'],
       header: ['label', 'description'].concat(lmcVars),
       paragraph: ['label', 'className', 'access'].concat(lmcVars),
-      checkbox: [
+      checkbox: isPreAssessment 
+        ? [
+          'required',
+          'label',
+          'description',
+          'options',
+          'toggle',
+          'inline',
+          'access',
+          'other',
+          'optionType',
+        ]
+        .concat(lmcVars)
+        .concat(['outputType'])
+        : [
+          'required',
+          'label',
+          'description',
+          'options',
+          'toggle',
+          'inline',
+          'access',
+          'other',
+          'optionType',
+        ].concat(lmcVars),
+      radio: [
         'required',
         'label',
         'description',
@@ -350,13 +375,10 @@ const FormBuilder = function(opts, element, $) {
         'access',
         'other',
         'optionType',
-        'outputType',
-        'outputQuestionHidden',
-        'outputQuestion',
       ].concat(lmcVars),
-      text: isPreAssessment ? defaultAttrs.concat(['outputType', 'outputQuestionHidden', 'outputQuestion']) : defaultAttrs,
-      textarea: isPreAssessment ? defaultAttrs.concat(['outputType', 'outputQuestionHidden', 'outputQuestion']) : defaultAttrs,
-      date: isPreAssessment ? defaultAttrs.concat(['outputType', 'outputQuestionHidden', 'outputQuestion']) : defaultAttrs,
+      text: isPreAssessment ? defaultAttrs.concat(['outputType']) : defaultAttrs,
+      textarea: isPreAssessment ? defaultAttrs.concat(['outputType']) : defaultAttrs,
+      date: isPreAssessment ? defaultAttrs.concat(['outputType']) : defaultAttrs,
       select: defaultAttrs.concat(['options', 'optionType']),
       bmiCalculation: calcAttrs,
       mustCalculation: ['key'],
@@ -370,7 +392,7 @@ const FormBuilder = function(opts, element, $) {
     }
 
     typeAttrsMap['checkbox-group'] = typeAttrsMap.checkbox
-    typeAttrsMap['radio-group'] = typeAttrsMap.checkbox
+    typeAttrsMap['radio-group'] = typeAttrsMap.radio
 
     const typeAttrs = typeAttrsMap[type]
 
