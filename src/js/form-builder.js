@@ -317,7 +317,11 @@ const FormBuilder = function(opts, element, $) {
 
     fieldOptions.push(optionsWrap)
 
-    return m('div', fieldOptions, { className: 'form-group field-options' }).outerHTML
+    const className = type.match(/checkbox/) 
+      ? 'form-group field-options checkbox'
+      : 'form-group field-options'
+
+    return m('div', fieldOptions, { className }).outerHTML
   }
 
   const defaultFieldAttrs = type => {
@@ -336,7 +340,32 @@ const FormBuilder = function(opts, element, $) {
       suggestedActions: ['label', 'description', 'suggestedActions', 'dependsOnKey', 'dependsOnValue'],
       header: ['label', 'description'].concat(lmcVars),
       paragraph: ['label', 'className', 'access'].concat(lmcVars),
-      checkbox: [
+      checkbox: isPreAssessment 
+        ? [
+          'required',
+          'label',
+          'description',
+          'options',
+          'toggle',
+          'inline',
+          'access',
+          'other',
+          'optionType',
+        ]
+        .concat(lmcVars)
+        .concat(['outputType'])
+        : [
+          'required',
+          'label',
+          'description',
+          'options',
+          'toggle',
+          'inline',
+          'access',
+          'other',
+          'optionType',
+        ].concat(lmcVars),
+      radio: [
         'required',
         'label',
         'description',
@@ -347,9 +376,9 @@ const FormBuilder = function(opts, element, $) {
         'other',
         'optionType',
       ].concat(lmcVars),
-      text: isPreAssessment ? defaultAttrs.concat(['outputType', 'outputQuestionHidden', 'outputQuestion']) : defaultAttrs,
-      textarea: isPreAssessment ? defaultAttrs.concat(['outputType', 'outputQuestionHidden', 'outputQuestion']) : defaultAttrs,
-      date: isPreAssessment ? defaultAttrs.concat(['outputType', 'outputQuestionHidden', 'outputQuestion']) : defaultAttrs,
+      text: isPreAssessment ? defaultAttrs.concat(['outputType']) : defaultAttrs,
+      textarea: isPreAssessment ? defaultAttrs.concat(['outputType']) : defaultAttrs,
+      date: isPreAssessment ? defaultAttrs.concat(['outputType']) : defaultAttrs,
       select: defaultAttrs.concat(['options', 'optionType']),
       bmiCalculation: calcAttrs,
       mustCalculation: ['key'],
@@ -363,7 +392,7 @@ const FormBuilder = function(opts, element, $) {
     }
 
     typeAttrsMap['checkbox-group'] = typeAttrsMap.checkbox
-    typeAttrsMap['radio-group'] = typeAttrsMap.checkbox
+    typeAttrsMap['radio-group'] = typeAttrsMap.radio
 
     const typeAttrs = typeAttrsMap[type]
 
@@ -1032,9 +1061,13 @@ const FormBuilder = function(opts, element, $) {
       optionTemplate.risk = 'na'
       optionDataOrder = ['value', 'label', 'risk']
     } else if (opts.formType === 'preAssessment') {
-      optionTemplate.outputType = 'na'
       optionTemplate.output = ''
-      optionDataOrder = ['value', 'label', 'output', 'outputType']
+      if (name.match(/checkbox/)) {
+        optionDataOrder = ['value', 'label', 'output']
+      } else {
+        optionTemplate.outputType = 'na'
+        optionDataOrder = ['value', 'label', 'output', 'outputType']
+      }
     } else {
       optionDataOrder = ['value', 'label']
     }
@@ -1421,6 +1454,8 @@ const FormBuilder = function(opts, element, $) {
       }
   
       name = $firstOption.attr('name').replace(/-option$/, '')
+    } else if ($optionWrap.hasClass('checkbox')) {
+      name = 'checkbox'
     } else {
       name = ''
     }

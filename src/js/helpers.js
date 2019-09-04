@@ -123,21 +123,27 @@ export default class Helpers {
   /**
    * Get option data for a field
    * @param  {Object} field jQuery field object
+   * @param {String} type jQuery field type
    * @return {Array}        Array of option values
    */
-  fieldOptionData(field) {
+  fieldOptionData(field, type) {
     const options = []
     const $options = $('.sortable-options li', field)
     $options.each(i => {
       const $option = $($options[i])
       const selected = $('.option-selected', $option).is(':checked')
-      const attrs = {
+      let attrs = {
         label: $('.option-label', $option).val(),
         value: $('.option-value', $option).val(),
         risk: $('.option-risk option:selected', $option).text(),
         output: $('.option-output', $option).val(),
-        outputType: $('.option-outputType option:selected', $option).text(),
       }
+      if (type && !type.match(/checkbox/)) {
+        attrs = {
+          ...attrs,
+          outputType: $('.option-outputType option:selected', $option).text(),
+        }
+      } 
 
       if (selected) {
         attrs.selected = selected
@@ -235,7 +241,7 @@ export default class Helpers {
           const multipleField = fieldData.type && fieldData.type.match(d.optionFieldsRegEx)
 
           if (multipleField) {
-            fieldData.values = _this.fieldOptionData($field)
+            fieldData.values = _this.fieldOptionData($field, fieldData.type)
             console.log('fieldData', fieldData)
           }
           if (fieldData.type === 'mustCalculation') {
