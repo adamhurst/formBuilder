@@ -134,7 +134,7 @@ export default class Helpers {
       const attrs = {
         label: $('.option-label', $option).val(),
         value: $('.option-value', $option).val(),
-        risk: $('.option-risk', $option).val(),
+        risk: $('.option-risk option:selected', $option).text(),
         output: $('.option-output', $option).val(),
         outputType: $('.option-outputType option:selected', $option).text(),
       }

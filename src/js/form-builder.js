@@ -1029,7 +1029,7 @@ const FormBuilder = function(opts, element, $) {
       value: 'value',
     }
     if (opts.formType === 'riskAssessment') {
-      optionTemplate.risk = 'na | low | medium | high | severe'
+      optionTemplate.risk = 'na'
       optionDataOrder = ['value', 'label', 'risk']
     } else if (opts.formType === 'preAssessment') {
       optionTemplate.outputType = 'na'
@@ -1082,8 +1082,6 @@ const FormBuilder = function(opts, element, $) {
           })
           const select = m('select', opts, {
             value: optionData[prop],
-            val: optionData[prop],
-            selected: optionData[prop],
             className: 'option-risk'
           }).outerHTML
 
