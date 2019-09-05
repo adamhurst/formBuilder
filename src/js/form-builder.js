@@ -279,11 +279,15 @@ const FormBuilder = function(opts, element, $) {
     const isMultiple = fieldData.multiple || type === 'checkbox-group'
     const optionDataTemplate = label => {
       const optionData = {
-        outputType: 'na',
-        output: '',
-        risk: 'na | low | medium | high | severe',
         label: 'Label',
         value: 'Value',
+      }
+
+      if (opts.formType === 'riskAssessment') {
+        optionData.risk = ''
+      } else if (opts.formType === 'preAssessment') {
+        optionData.output = ''
+        optionData.outputType = 'na'
       }
 
       if (type !== 'autocomplete') {
@@ -1058,7 +1062,7 @@ const FormBuilder = function(opts, element, $) {
       value: 'value',
     }
     if (opts.formType === 'riskAssessment') {
-      optionTemplate.risk = 'na'
+      optionTemplate.risk = ''
       optionDataOrder = ['value', 'label', 'risk']
     } else if (opts.formType === 'preAssessment') {
       optionTemplate.output = ''
@@ -1106,7 +1110,7 @@ const FormBuilder = function(opts, element, $) {
           const el = m('input', null, attrs).outerHTML
           optionInputs.push(`<div style="padding-left: 10px; padding-bottom: 10px;">Output: ${el}</div>`)
         } else if (prop === 'risk') {
-          const opts = ['na', 'low', 'medium', 'high', 'severe'].map(val => {
+          const opts = ['', 'na', 'low', 'medium', 'high', 'severe'].map(val => {
             const attrs = { value: undefined }
             if (optionData[prop] === val) {
               attrs.selected = true

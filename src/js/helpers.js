@@ -132,18 +132,21 @@ export default class Helpers {
     $options.each(i => {
       const $option = $($options[i])
       const selected = $('.option-selected', $option).is(':checked')
-      let attrs = {
+      const attrs = {
         label: $('.option-label', $option).val(),
         value: $('.option-value', $option).val(),
-        risk: $('.option-risk option:selected', $option).text(),
         output: $('.option-output', $option).val(),
       }
+      const risk = $('.option-risk option:selected', $option).text();
+      if (risk && risk !== '') {
+        attrs.risk = risk
+      }
       if (type && !type.match(/checkbox/)) {
-        attrs = {
-          ...attrs,
-          outputType: $('.option-outputType option:selected', $option).text(),
+        const outputType = $('.option-outputType option:selected', $option).text();
+        if (outputType && outputType !== '') {
+          attrs.outputType = outputType;
         }
-      } 
+      }
 
       if (selected) {
         attrs.selected = selected
