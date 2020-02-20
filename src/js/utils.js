@@ -87,6 +87,8 @@ export const safeAttr = (name, value) => {
     } else {
       if (typeof value === 'boolean') {
         value = value.toString()
+      } else {
+        value = `${value}`
       }
       valString = escapeAttr(value.trim())
     }
