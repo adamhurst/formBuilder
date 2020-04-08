@@ -34,7 +34,13 @@ const FormBuilder = function(opts, element, $) {
   const formID = `frmb-${new Date().getTime()}`
   const data = new Data(formID)
   const d = new Dom(formID)
-
+  // opts.formData = [
+  //   {
+  //     'type': 'suggestedActions',
+  //     'label': 'Suggested Actions',
+  //     'suggestedActions': 'test'
+  //   }
+  // ]
   // prepare a new layout object with appropriate templates
   if (!opts.layout) {
     opts.layout = layout
@@ -236,7 +242,6 @@ const FormBuilder = function(opts, element, $) {
       field = Object.assign({}, field, opts.onAddField(data.lastID, field))
       setTimeout(() => document.dispatchEvent(events.fieldAdded), 10)
     }
-
     appendNewField(field, isNew)
 
     d.stage.classList.remove('empty')
@@ -865,7 +870,6 @@ const FormBuilder = function(opts, element, $) {
    */
   const textAttribute = (attribute, values, isHidden = false) => {
     const textArea = ['paragraph']
-
     let attrVal = values[attribute] || ''
     let attrLabel = mi18n.get(attribute)
 
@@ -901,11 +905,7 @@ const FormBuilder = function(opts, element, $) {
       } else {
         inputConfig.value = attrVal
         inputConfig.type = 'text'
-        if (attribute === 'suggestedActions') {
-          attributefield += `<textarea ${attrString(inputConfig)}></textarea>`
-        } else {
-          attributefield += `<input ${attrString(inputConfig)}>`
-        }
+        attributefield += `<input ${attrString(inputConfig)}>`
       }
 
       const inputWrap = `<div class="input-wrap">${attributefield}</div>`
