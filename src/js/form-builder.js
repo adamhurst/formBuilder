@@ -464,11 +464,12 @@ const FormBuilder = function(opts, element, $) {
       ]),
       outputQuestionHidden: () => boolAttribute('outputQuestionHidden', values, { first: 'Hide Q in output' }),
       outputQuestion: () => textAttribute('outputQuestion', values),
-      outputType: () => selectAttribute('outputType', values, [
-        { value: 'needs', label: 'Needs'},
-        { value: 'strengths', label: 'Strengths'},
-        { value: 'na', label: 'NA'}
-      ]),
+      // outputType: () => selectAttribute('outputType', values, [
+      //   { value: 'needs', label: 'Needs'},
+      //   { value: 'strengths', label: 'Strengths'},
+      //   { value: 'na', label: 'NA'}
+      // ]),
+      outputType: () => textAttribute('outputType', values),
       low: () => numberAttribute('low', values),
       high: () => numberAttribute('high', values),
       dependsOnKey: () => textAttribute('dependsOnKey', values),
@@ -879,6 +880,8 @@ const FormBuilder = function(opts, element, $) {
       } else {
         attrVal = parsedHtml(attrVal)
       }
+    } else if (attribute === 'outputType') {
+      attrLabel = 'Care Plan Section Key (outputType: strengths, needs, custom)'
     }
 
     const placeholder = mi18n.get(`placeholders.${attribute}`) || ''
@@ -1090,23 +1093,7 @@ const FormBuilder = function(opts, element, $) {
         }
         attrs.placeholder = mi18n.get(`placeholder.${prop}`) || ''
         
-        if (prop === 'outputType') {
-          const opts = ['na', 'strengths', 'needs'].map(val => {
-            const attrs = { value: undefined }
-            if (optionData[prop] === val) {
-              attrs.selected = true
-            }
-            return  m('option', val, attrs)
-          })
-
-          const select = m('select', opts, {
-            value: optionData[prop],
-            className: 'option-outputType'
-          }).outerHTML
-
-          const inputWrap = `<div style="padding-left: 10px; padding-bottom: 10px;">Output type: ${select}</div>`
-          optionInputs.push(inputWrap)
-        } else if (prop === 'output') {
+        if (prop === 'output') {
           const el = m('input', null, attrs).outerHTML
           optionInputs.push(`<div style="padding-left: 10px; padding-bottom: 10px;">Output: ${el}</div>`)
         } else if (prop === 'risk') {
